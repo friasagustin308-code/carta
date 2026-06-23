@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ámbar — Carta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e1116;
+    --bg-elevated:#161b22;
+    --line:#232a33;
+    --text:#eef1f5;
+    --text-dim:#8b94a3;
+    --accent:#e08a3c;
+    --accent-soft:rgba(224,138,60,.12);
+    --accent2:#4fb3a9;
+    --accent2-soft:rgba(79,179,169,.12);
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Manrope', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{ color:inherit; }
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+  }
+
+  /* ---------- TOPBAR ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:10;
+    background:rgba(14,17,22,.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-inner{
+    max-width:1080px; margin:0 auto;
+    display:flex; align-items:center; gap:1.2rem;
+    padding:.75rem 1.3rem;
+    flex-wrap:wrap;
+  }
+  .logo{ display:flex; align-items:center; gap:.55rem; flex:none; }
+  .logo svg{ width:22px; height:22px; color:var(--accent); }
+  .logo span{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700; font-size:1rem; letter-spacing:.02em;
+  }
+  .nav-list{
+    display:flex; gap:.4rem; list-style:none; margin:0; padding:0;
+    flex:1; overflow-x:auto; justify-content:flex-end;
+  }
+  .nav-link{
+    font-family:'Space Mono', monospace;
+    font-size:.7rem; letter-spacing:.04em; text-transform:uppercase;
+    text-decoration:none; color:var(--text-dim);
+    padding:.45rem .8rem; border-radius:7px;
+    white-space:nowrap;
+    transition:background .15s, color .15s;
+  }
+  .nav-link:hover{ color:var(--text); background:var(--bg-elevated); }
+  .nav-link.active{ color:var(--bg); background:var(--accent); }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    max-width:1080px; margin:0 auto;
+    padding:clamp(2.6rem,6vw,4.5rem) 1.3rem 2.5rem;
+  }
+  .eyebrow{
+    font-family:'Space Mono', monospace;
+    font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 .9rem;
+  }
+  .hero h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:clamp(2.2rem,6vw,3.4rem);
+    margin:0 0 .7rem;
+    letter-spacing:-.01em;
+  }
+  .hero p{
+    color:var(--text-dim);
+    font-size:1.02rem;
+    max-width:520px;
+    margin:0 0 1.1rem;
+  }
+  .hero-meta{
+    display:flex; gap:.6rem; flex-wrap:wrap;
+    font-family:'Space Mono', monospace;
+    font-size:.78rem; color:var(--text-dim);
+  }
+  .hero-meta span:not(:last-child)::after{ content:'·'; margin-left:.6rem; }
+
+  /* ---------- CATEGORY SECTIONS ---------- */
+  main{ max-width:1080px; margin:0 auto; padding:0 1.3rem 2rem; }
+
+  .category{
+    padding:2.6rem 0;
+    border-top:1px solid var(--line);
+  }
+  .category:first-child{ border-top:none; }
+
+  .cat-header{
+    display:flex; align-items:center; gap:1rem;
+    margin-bottom:1.6rem;
+  }
+  .cat-icon{
+    width:52px; height:52px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    flex:none;
+  }
+  .cat-icon svg{ width:26px; height:26px; }
+  .cat-icon.accent{ border:2px solid var(--accent); background:var(--accent-soft); }
+  .cat-icon.accent svg{ color:var(--accent); }
+  .cat-icon.accent2{ border:2px solid var(--accent2); background:var(--accent2-soft); }
+  .cat-icon.accent2 svg{ color:var(--accent2); }
+
+  .cat-header h2{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:1.35rem;
+    margin:0 0 .15rem;
+  }
+  .cat-meta{
+    font-family:'Space Mono', monospace;
+    font-size:.72rem;
+    color:var(--text-dim);
+    letter-spacing:.02em;
+  }
+
+  .items-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(260px,1fr));
+    gap:.9rem;
+  }
+
+  .card{
+    background:var(--bg-elevated);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:1.15rem 1.25rem;
+    transition:transform .15s ease, border-color .15s ease;
+  }
+  .card-head{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    gap:.7rem; margin-bottom:.4rem;
+  }
+  .card-name{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600; font-size:1rem;
+  }
+  .card-desc{
+    font-size:.85rem; line-height:1.45;
+    color:var(--text-dim);
+    margin:0;
+  }
+  .price{
+    font-family:'Space Mono', monospace;
+    font-size:.82rem;
+    padding:.2rem .55rem;
+    border-radius:6px;
+    white-space:nowrap;
+    flex:none;
+  }
+  .items-grid.accent .price{ color:var(--accent); background:var(--accent-soft); }
+  .items-grid.accent .card:hover{ transform:translateY(-3px); border-color:var(--accent); }
+  .items-grid.accent2 .price{ color:var(--accent2); background:var(--accent2-soft); }
+  .items-grid.accent2 .card:hover{ transform:translateY(-3px); border-color:var(--accent2); }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    border-top:1px solid var(--line);
+    max-width:1080px; margin:0 auto;
+    padding:2.2rem 1.3rem 3rem;
+    display:flex; flex-wrap:wrap; gap:.5rem 1.2rem;
+    justify-content:space-between; align-items:center;
+  }
+  footer .logo span{ font-size:.95rem; }
+  footer .foot-lines{
+    display:flex; gap:1rem; flex-wrap:wrap;
+    font-family:'Space Mono', monospace;
+    font-size:.72rem; color:var(--text-dim);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; scroll-behavior:auto !important; }
+  }
+
+  @media (max-width:560px){
+    .topbar-inner{ justify-content:center; }
+    .nav-list{ justify-content:flex-start; }
+    .hero-meta{ font-size:.72rem; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16L12 14 4 4Z"/><path d="M12 14v6M9 20h6"/></svg>
+        <span>ÁMBAR</span>
+      </div>
+      <ul class="nav-list">
+        <li><a class="nav-link" href="#cocteles">Cócteles</a></li>
+        <li><a class="nav-link" href="#cervezas">Cervezas</a></li>
+        <li><a class="nav-link" href="#vinos">Vinos</a></li>
+        <li><a class="nav-link" href="#comida">Comida</a></li>
+        <li><a class="nav-link" href="#picadas">Para picar</a></li>
+        <li><a class="nav-link" href="#sin-alcohol">Sin alcohol</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <section class="hero">
+    <p class="eyebrow">Carta completa</p>
+    <h1>Ámbar</h1>
+    <p>Cócteles de autor, buena cerveza, vinos por copa y platos para compartir o ir a fondo. De todo un poco, bien hecho.</p>
+    <div class="hero-meta">
+      <span>Av. Siempre Viva 1234, Tucumán</span>
+      <span>Mar a dom · 19:00–02:00</span>
+    </div>
+  </section>
+
+  <main>
+
+    <section class="category" id="cocteles">
+      <div class="cat-header">
+        <span class="cat-icon accent">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16L12 14 4 4Z"/><path d="M12 14v6M9 20h6"/></svg>
+        </span>
+        <div>
+          <h2>Cócteles de la casa</h2>
+          <span class="cat-meta">4 opciones</span>
+        </div>
+      </div>
+      <div class="items-grid accent">
+        <div class="card">
+          <div class="card-head"><span class="card-name">Negroni de Autor</span><span class="price">$5.200</span></div>
+          <p class="card-desc">Gin, Campari y vermut rojo, mecidos a fuego lento.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-name">Fernet Especial</span><span class="price">$4.200</span></div>
+          <p class="card-desc">Fernet, cola bien fría y un toque de menta fresca.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-name">Whiskey Sour</span><span class="price">$5.500</span></div>
+          <p class="card-desc">Whisky, limón, clara de huevo y unas gotas de angostura.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-name">Mula de Jengibre</span><span class="price">$5.000</span></div>
+          <p class="card-desc">Vodka, jengibre picante, lima y soda bien helada.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="category" id="cervezas">
+      <div class="cat-header">
+        <span class="cat-icon accent">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h9v15a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4Z"/><path d="M15 8h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/><path d="M6 9h9"/></svg>
+        </span>
+        <div>
+          <h2>Cervezas</h2>
+          <span class="cat-meta">4 opciones</span>
+        </div>
+      </div>
+      <div class="items-grid accent">
+        <div class="card">
+          <div class="card-head"><span class="card-name">Rubia de Barril</span><span class="price">$3.200</span></div>
+          <p class="card-desc">Lager liviana, dorada y bien fría.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-name">IPA Cítrica</span><span class="price">$3.600</span></div>
+          <p class="card-desc">Amarga y cítrica, con aroma a pomelo.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-name">Stout</span><span class="price">$3.800</span></div>
+          <p class="card-desc">Negra, con cuerpo a café tostado y cacao.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-name">Trigo</span><span class="price">$3.500</span></div>
+          <p class="card-desc">Suave, con notas a banana y clavo de olor.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="category" id="vinos">
+      <div class="cat-header">
+        <span class="cat-icon accent">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10c0 5-2 8-5 8s-5-3-5-8Z"/><path d="M12 11v7"/><path d="M8 20h8"/></svg>
+        </span>
+        <div>
+          <h2>Vinos (copa)</h2>
+          <span class="cat-meta">3 opciones</span>
+        </div>
+      </div>
+      <div class="items-grid accent">
+        <div class="card">
+          <div class="card-head"><span class="card-name">Malbec Reserva</span><span class="price">$4.800</span></div>
+          <p class="card-desc">Cuerpo intenso, taninos suaves, frutos rojos.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-name">Torrontés</span><span class="price">$4.200</span></div>
+          <p class="card-desc">Fresco y floral, ideal para el calor.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-name">Blend Tinto de la Casa</span><span class="price">$4.000</span></div>
+          <p class="card-desc">Mezcla propia, especiado y redondo.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="category" id="comida">
+      <div class="cat-header">
+        <span class="cat-icon accent2">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2v8M5 2v4a2 2 0 0 0 4 0V2M7 10v12"/><path d="M17 2c2.2 0 3.5 1.8 3.5 4.5S19.2 11 17 11v11"/></svg>
+        </span>
+        <div>
+          <h2>Comida</h2>
+          <span class="cat-meta">5 platos</span>
+        </div>
+      </div>
+      <div class="items-grid accent2">
+        <div class="card">
+          <div class="card-head"><span class="card-name">Hamburguesa de la Casa</span><span class="price">$6.500</span></div>
+          <p class="card-desc">Carne 200g, cheddar, panceta y salsa ahumada, con papas.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-name">Sándwich de Vacío</span><span class="price">$6.200</span></div>
+          <p class="card-desc">Vacío braseado a baja temperatura, cebolla caramelizada y chimichurri.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-name">Bowl de Pollo Grillado</span><span class="price">$5.800</span></div>
+          <p class="card-desc">Pollo grillado, arroz integral, palta y vegetales de estación.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-name">Tarta de Verduras</span><span class="price">$4.900</span></div>
+          <p class="card-desc">Masa casera con espinaca, zapallitos y queso de cabra.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-name">Milanesa Napolitana</span><span class="price">$7.200</span></div>
+          <p class="card-desc">Con jamón, muzzarella y salsa de tomate casera, papas fritas.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="category" id="picadas">
+      <div class="cat-header">
+        <span class="cat-icon accent2">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="7"/><circle cx="9.5" cy="11" r=".8" fill="currentColor" stroke="none"/><circle cx="14" cy="10.5" r=".8" fill="currentColor" stroke="none"/><circle cx="13" cy="14.5" r=".8" fill="currentColor" stroke="none"/></svg>
+        </span>
+        <div>
+          <h2>Para picar</h2>
+          <span class="cat-meta">4 opciones</span>
+        </div>
+      </div>
+      <div class="items-grid accent2">
+        <div class="card">
+          <div class="card-head"><span class="card-name">Tabla Mixta</span><span class="price">$7.800</span></div>
+          <p class="card-desc">Quesos, fiambres y pan casero.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-name">Papas Rústicas</span><span class="price">$3.400</span></div>
+          <p class="card-desc">Papas asadas con romero y alioli ahumado.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-name">Empanadas de Carne (x3)</span><span class="price">$4.200</span></div>
+          <p class="card-desc">Cortadas a cuchillo, horneadas a la antigua.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-name">Provoleta a las Brasas</span><span class="price">$4.600</span></div>
+          <p class="card-desc">Con orégano y un hilo de aceite picante.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="category" id="sin-alcohol">
+      <div class="cat-header">
+        <span class="cat-icon accent2">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg>
+        </span>
+        <div>
+          <h2>Sin alcohol</h2>
+          <span class="cat-meta">3 opciones</span>
+        </div>
+      </div>
+      <div class="items-grid accent2">
+        <div class="card">
+          <div class="card-head"><span class="card-name">Limonada de Jengibre</span><span class="price">$2.200</span></div>
+          <p class="card-desc">Casera, bien fresca, con un toque de menta.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-name">Soda Artesanal</span><span class="price">$2.000</span></div>
+          <p class="card-desc">Pomelo o lima-limón, a elección.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-name">Café de Filtro</span><span class="price">$1.800</span></div>
+          <p class="card-desc">Tueste medio, servido en jarrita.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16L12 14 4 4Z"/><path d="M12 14v6M9 20h6"/></svg>
+      <span>ÁMBAR</span>
+    </div>
+    <div class="foot-lines">
+      <span>Av. Siempre Viva 1234, Tucumán</span>
+      <span>Mar a dom · 19:00–02:00</span>
+      <span>Carta sujeta a cambios</span>
+    </div>
+  </footer>
+
+  <script>
+    const links = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('.category');
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            links.forEach(l => l.classList.remove('active'));
+            const match = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+            if (match) match.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-40% 0px -50% 0px' });
+
+      sections.forEach(s => observer.observe(s));
+    }
+  </script>
+
+</body>
+</html>
